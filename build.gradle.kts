@@ -27,3 +27,5 @@ dependencies {
 application {
     mainClassName = "carcassonne.AppKt"
 }
+
+apply(from = "${rootProject.rootDir}/gradle/wrapper.gradle.kts")
