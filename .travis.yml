@@ -1,0 +1,27 @@
+language: java
+
+services:
+    - docker
+
+jdk:
+    - openjdk12
+
+before_cache:
+    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+    npm: true
+    yarn: true
+    directories:
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+
+install:
+    - .travis/build.sh
+
+script:
+    - .travis/test.sh
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
