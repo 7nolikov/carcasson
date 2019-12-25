@@ -13,6 +13,15 @@ plugins {
     jacoco
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        csv.isEnabled = false
+        html.isEnabled = true
+        html.destination = file("$buildDir/reports/coverage")
+    }
+}
+
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
