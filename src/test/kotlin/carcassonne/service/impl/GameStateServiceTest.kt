@@ -20,7 +20,7 @@ internal class GameStateServiceTest {
 
 
     @Test
-    fun update() {
-        gameStateService.update()
+    fun startGame() {
+        gameStateService.startGame()
     }
 }
