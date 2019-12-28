@@ -24,9 +24,3 @@ jobs:
       with:
         # Sonar-scanner version
         version: 4.2.0.1873
-    - name: Code Climate Coverage Action
-      uses: paambaati/codeclimate-action@v2.3.0
-      with:
-        # Coverage command to execute
-        # Enable debugging logs for the Code Climate test reporter
-        debug: false
