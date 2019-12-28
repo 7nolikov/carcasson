@@ -1,6 +1,6 @@
 package carcassonne.domain
 
-class Tile (
+data class Tile (
     val id: String,
     val image: String
 )

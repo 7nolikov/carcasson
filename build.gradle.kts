@@ -26,5 +26,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("org.amshove.kluent:kluent:1.58")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
 }
