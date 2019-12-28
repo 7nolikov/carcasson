@@ -1,6 +1,6 @@
 package carcassonne.service
 
-import carcassonne.domain.Room
+import carcassonne.domain.room.Room
 
 interface RoomService {
     fun create(): Room
