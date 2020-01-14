@@ -1,4 +1,3 @@
-
 plugins {
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.spring") version "1.3.61"
@@ -49,4 +48,8 @@ tasks.jacocoTestReport {
         html.isEnabled = true
         html.destination = file("$buildDir/reports/coverage")
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "1.8"
 }
