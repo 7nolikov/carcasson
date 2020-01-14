@@ -1,6 +1,6 @@
 package carcassonne.service
 
-import carcassonne.domain.GameSettings
+import carcassonne.domain.game.GameSettings
 
 interface GameSettingsService {
     fun get(): GameSettings

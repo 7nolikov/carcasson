@@ -1,6 +1,6 @@
-package carcassonne.domain
+package carcassonne.domain.action
 
-import carcassonne.domain.action.PlayerAction
+import carcassonne.domain.player.Player
 
 data class ActionState (
     val player: Player,

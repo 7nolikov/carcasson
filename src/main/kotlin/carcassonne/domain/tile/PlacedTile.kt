@@ -1,4 +1,4 @@
-package carcassonne.domain
+package carcassonne.domain.tile
 
 import java.awt.Point
 

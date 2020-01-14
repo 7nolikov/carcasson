@@ -1,6 +1,6 @@
 package carcassonne.domain.action
 
-import carcassonne.domain.Tile
+import carcassonne.domain.tile.Tile
 
 class TilePlacementAction(
     val tile: Tile

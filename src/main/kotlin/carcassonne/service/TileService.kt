@@ -1,6 +1,6 @@
 package carcassonne.service
 
-import carcassonne.domain.Tile
+import carcassonne.domain.tile.Tile
 import java.awt.Point
 
 interface TileService {
