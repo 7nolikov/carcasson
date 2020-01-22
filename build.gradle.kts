@@ -26,6 +26,7 @@ dependencies {
 
     // utils
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.tinder.statemachine:statemachine:0.2.0")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
