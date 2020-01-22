@@ -21,7 +21,6 @@ dependencies {
 
     // spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.statemachine:spring-statemachine-starter:2.1.2.RELEASE")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // utils
