@@ -1,4 +1,7 @@
 # Carcassonne board game
+
+![Carcassone Logo](https://upload.wikimedia.org/wikipedia/commons/e/ec/Carcassonne-meeple.jpg)
+
 ## Gameplay
 The game board is a medieval landscape built by the players as the game progresses. The game starts with a single terrain tile face up and 71 others shuffled face down for the players to draw from. On each turn a player draws a new terrain tile and places it adjacent to tiles that are already face up. The new tile must be placed in a way that extends features on the tiles it touches: roads must connect to roads, fields to fields, and cities to cities.
 
