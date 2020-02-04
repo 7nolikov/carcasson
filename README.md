@@ -10,7 +10,7 @@ After placing each new tile, the placing player may opt to station a piece (call
 The game ends when the last tile has been placed. At that time, all features (including fields) score points for the players with the most followers on them. The player with the most points wins the game.
 
 ## Scoring
-During the players' turns, cities, cloisters, and roads (but not fields) are scored when they are completed—cities and roads when they are completed (i.e. contain no unfinished edges from which they may be expanded), and cloisters when surrounded by eight tiles. At the end of the game, when there are no tiles remaining, all incomplete features are scored. Points are awarded to the players with the most followers in a feature.
+During the players' turns, cities, cloisters, and roads (but not fields) are scored when they are completed-cities and roads when they are completed (i.e. contain no unfinished edges from which they may be expanded), and cloisters when surrounded by eight tiles. At the end of the game, when there are no tiles remaining, all incomplete features are scored. Points are awarded to the players with the most followers in a feature.
 
 If there is a tie for the most followers in any given feature, all of the tied players are awarded the full number of points. In general (see table), points are awarded for the number of tiles covered by a feature; cloisters score for neighboring tiles; and fields score based on the number of connected completed cities.
 
