@@ -1,4 +1,4 @@
-package carcassonne.controller
+package carcassonne.client
 
 import carcassonne.service.AuthService
 import carcassonne.statemachine.auth.AuthStateMachineFactory
