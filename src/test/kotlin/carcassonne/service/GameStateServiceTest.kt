@@ -1,9 +1,8 @@
-package carcassonne.service.impl
+package carcassonne.service
 
 import carcassonne.domain.game.GameState
 import carcassonne.domain.player.Player
 import carcassonne.domain.tile.Tile
-import carcassonne.service.GameStateService
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.amshove.kluent.`should equal`
