@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class AuthServiceTest {
 
     @InjectMockKs
-    private lateinit var authService: AuthService
+    private lateinit var authService: AuthServiceImpl
 
     private val authStateMachine = mockk<StateMachine<State, Event, SideEffect>>()
 
