@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient
 interface AuthClient {
 
     @RequestLine("POST /login")
-    fun login(username: String, password: String)
+    fun login(username: String, password: String): String
 
     @RequestLine("POST /register")
     fun register()
