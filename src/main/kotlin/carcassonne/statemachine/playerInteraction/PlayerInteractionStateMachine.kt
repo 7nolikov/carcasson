@@ -35,7 +35,7 @@ sealed class SideEffect {
     object LogFinalScoreBoardExit : SideEffect()
 }
 
-object AuthStateMachineFactory {
+object PlayerInteractionStateMachineFactory {
     fun getInstance(): StateMachine<State, Event, SideEffect> {
         return StateMachine.create {
             initialState(State.NotLogged)
