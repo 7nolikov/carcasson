@@ -22,6 +22,7 @@ dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:2.2.1.RELEASE")
 
     // utils
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

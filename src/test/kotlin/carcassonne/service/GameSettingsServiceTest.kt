@@ -1,4 +1,4 @@
-package carcassonne.service.impl
+package carcassonne.service
 
 class GameSettingsServiceTest {
 }

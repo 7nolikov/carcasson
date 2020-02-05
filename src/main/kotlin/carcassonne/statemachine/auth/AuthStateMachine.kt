@@ -27,48 +27,52 @@ sealed class SideEffect {
     object LogPasswordReset : SideEffect()
 }
 
-val authStateMachine = StateMachine.create<State, Event, SideEffect> {
-    initialState(State.NotLogged)
+object AuthStateMachineFactory {
+    fun getInstance(): StateMachine<State, Event, SideEffect> {
+        return StateMachine.create {
+            initialState(State.NotLogged)
 
-    state<State.NotLogged> {
-        on<Event.OnLogin> {
-            transitionTo(State.Logged, SideEffect.LogLogged)
-        }
+            state<State.NotLogged> {
+                on<Event.OnLogin> {
+                    transitionTo(State.Logged, SideEffect.LogLogged)
+                }
 
-        on<Event.OnRegister> {
-            transitionTo(State.PendingVerification, SideEffect.LogPendingVerification)
-        }
+                on<Event.OnRegister> {
+                    transitionTo(State.PendingVerification, SideEffect.LogPendingVerification)
+                }
 
-        on<Event.OnPasswordReset> {
-            transitionTo(State.PasswordReset, SideEffect.LogPasswordReset)
-        }
-    }
+                on<Event.OnPasswordReset> {
+                    transitionTo(State.PasswordReset, SideEffect.LogPasswordReset)
+                }
+            }
 
-    state<State.PendingVerification> {
-        on<Event.OnVerificationCodeAccepted> {
-            transitionTo(State.Logged, SideEffect.LogLogged)
-        }
-    }
+            state<State.PendingVerification> {
+                on<Event.OnVerificationCodeAccepted> {
+                    transitionTo(State.Logged, SideEffect.LogLogged)
+                }
+            }
 
-    state<State.Logged> {
-        on<Event.OnLogout> {
-            transitionTo(State.NotLogged, SideEffect.LogNotLogged)
-        }
-    }
+            state<State.Logged> {
+                on<Event.OnLogout> {
+                    transitionTo(State.NotLogged, SideEffect.LogNotLogged)
+                }
+            }
 
-    state<State.PasswordReset> {
-        on<Event.OnVerificationCodeAccepted> {
-            transitionTo(State.Logged, SideEffect.LogLogged)
-        }
-    }
+            state<State.PasswordReset> {
+                on<Event.OnVerificationCodeAccepted> {
+                    transitionTo(State.Logged, SideEffect.LogLogged)
+                }
+            }
 
-    onTransition {
-        val validTransition = it as? StateMachine.Transition.Valid ?: return@onTransition
-        when (validTransition.sideEffect) {
-            SideEffect.LogNotLogged -> logger?.debug(NOT_LOGGED_MESSAGE)
-            SideEffect.LogLogged -> logger?.debug(LOGGED_MESSAGE)
-            SideEffect.LogPendingVerification -> logger?.debug(PENDING_VERIFICATION_MESSAGE)
-            SideEffect.LogPasswordReset -> logger?.debug(PASSWORD_RESET_MESSAGE)
+            onTransition {
+                val validTransition = it as? StateMachine.Transition.Valid ?: return@onTransition
+                when (validTransition.sideEffect) {
+                    SideEffect.LogNotLogged -> logger?.debug(NOT_LOGGED_MESSAGE)
+                    SideEffect.LogLogged -> logger?.debug(LOGGED_MESSAGE)
+                    SideEffect.LogPendingVerification -> logger?.debug(PENDING_VERIFICATION_MESSAGE)
+                    SideEffect.LogPasswordReset -> logger?.debug(PASSWORD_RESET_MESSAGE)
+                }
+            }
         }
     }
 }
