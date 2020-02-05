@@ -36,11 +36,9 @@ object AuthStateMachineFactory {
                 on<Event.OnLogin> {
                     transitionTo(State.Logged, SideEffect.LogLogged)
                 }
-
                 on<Event.OnRegister> {
                     transitionTo(State.PendingVerification, SideEffect.LogPendingVerification)
                 }
-
                 on<Event.OnPasswordReset> {
                     transitionTo(State.PasswordReset, SideEffect.LogPasswordReset)
                 }
