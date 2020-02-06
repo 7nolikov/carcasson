@@ -1,6 +1,11 @@
 package carcassonne.service
 
+import carcassonne.domain.player.Player
+import carcassonne.exception.PasswordIncorrectException
+import carcassonne.exception.PlayerNotFoundException
+import carcassonne.repository.PlayerRepository
 import org.springframework.stereotype.Service
+import kotlin.random.Random
 
 interface AuthService {
     fun login(username: String, password: String): String
@@ -11,10 +16,18 @@ interface AuthService {
 }
 
 @Service
-class AuthServiceImpl: AuthService {
+class AuthServiceImpl(
+    val userRepository: PlayerRepository
+) : AuthService {
 
     override fun login(username: String, password: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        validatePassword(username, password)
+        return calculateToken()
+    }
+
+    private fun validatePassword(username: String, password: String) {
+        val player: Player = userRepository.findById(username).orElseThrow { throw PlayerNotFoundException(username) }
+        player.password.takeIf { it == password } ?: throw PasswordIncorrectException(username)
     }
 
     override fun register(): String {
@@ -33,4 +46,15 @@ class AuthServiceImpl: AuthService {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    private fun calculateToken(): String {
+        return (1..UUID_STRING_LENGTH)
+            .map { _ -> Random.nextInt(0, charPool.size) }
+            .map(charPool::get)
+            .joinToString("")
+    }
+
+    companion object {
+        const val UUID_STRING_LENGTH = 10
+        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+    }
 }
