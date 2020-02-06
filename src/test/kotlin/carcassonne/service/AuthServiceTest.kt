@@ -1,5 +1,9 @@
 package carcassonne.service
 
+import carcassonne.domain.meeple.Meeple
+import carcassonne.domain.meeple.MeepleType
+import carcassonne.domain.player.Player
+import carcassonne.repository.PlayerRepository
 import carcassonne.statemachine.auth.Event
 import carcassonne.statemachine.auth.SideEffect
 import carcassonne.statemachine.auth.State
@@ -14,6 +18,7 @@ import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should not be`
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.util.*
 
 @ExtendWith(MockKExtension::class)
 class AuthServiceTest {
@@ -22,25 +27,17 @@ class AuthServiceTest {
     private lateinit var authService: AuthServiceImpl
 
     private val authStateMachine = mockk<StateMachine<State, Event, SideEffect>>()
+    private val playerRepository = mockk<PlayerRepository>()
 
     @Test
     fun `Test login in positive case`() {
         every {
-            authService.login(
-                TEST_USERNAME,
-                TEST_PASSWORD
-            )
-        } returns TEST_TOKEN
+            playerRepository.findById(TEST_USERNAME)
+        } returns Optional.of(player)
         val token = authService.login(
             TEST_USERNAME,
             TEST_PASSWORD
         )
-        verify {
-            authService.login(
-                TEST_USERNAME,
-                TEST_PASSWORD
-            )
-        }
         token `should not be` null
         token `should equal` TEST_TOKEN
         authStateMachine.state `should equal` State.Logged
@@ -83,5 +80,11 @@ class AuthServiceTest {
         private const val TEST_PASSWORD = "secretpassword"
         private const val TEST_TOKEN = "secrettoken"
         private const val TEST_VERIFICATION_CODE = "verificationcode"
+        private const val TEST_EMAIL = "test@gmail.com"
+        private val meeple = Meeple(id = 1, type = MeepleType.DEFAULT)
+        private val TEST_MEEPLES = listOf(meeple)
+        private const val TEST_SCORE = 1000
+        private val player =
+            Player(name = TEST_USERNAME, password = TEST_PASSWORD, email = TEST_EMAIL, meeples = TEST_MEEPLES, score = TEST_SCORE)
     }
 }

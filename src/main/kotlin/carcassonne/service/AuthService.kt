@@ -17,7 +17,7 @@ interface AuthService {
 
 @Service
 class AuthServiceImpl(
-    val userRepository: PlayerRepository
+    val playerRepository: PlayerRepository
 ) : AuthService {
 
     override fun login(username: String, password: String): String {
@@ -26,7 +26,7 @@ class AuthServiceImpl(
     }
 
     private fun validatePassword(username: String, password: String) {
-        val player: Player = userRepository.findById(username).orElseThrow { throw PlayerNotFoundException(username) }
+        val player: Player = playerRepository.findById(username).orElseThrow { throw PlayerNotFoundException(username) }
         player.password.takeIf { it == password } ?: throw PasswordIncorrectException(username)
     }
 
