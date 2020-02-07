@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 interface AuthService {
     fun login(username: String, password: String): String
-    fun register(): String
+    fun register(username: String, password: String, email: String): String
     fun checkVerificationCode(): Boolean
     fun resetPassword(): String
     fun logout()
@@ -22,7 +22,7 @@ class AuthServiceImpl(
 
     override fun login(username: String, password: String): String {
         validatePassword(username, password)
-        return calculateToken()
+        return getRandomString(TOKEN_UUID_STRING_LENGTH)
     }
 
     private fun validatePassword(username: String, password: String) {
@@ -30,8 +30,10 @@ class AuthServiceImpl(
         player.password.takeIf { it == password } ?: throw PasswordIncorrectException(username)
     }
 
-    override fun register(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun register(username: String, password: String, email: String): String {
+        val player = Player(name = username, password = password, email = email)
+        playerRepository.save(player)
+        return getRandomString(VERIFICATION_CODE_UUID_STRING_LENGTH)
     }
 
     override fun checkVerificationCode(): Boolean {
@@ -46,15 +48,16 @@ class AuthServiceImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun calculateToken(): String {
-        return (1..UUID_STRING_LENGTH)
+    private fun getRandomString(length: Int): String {
+        return (1..length)
             .map { _ -> Random.nextInt(0, charPool.size) }
             .map(charPool::get)
             .joinToString("")
     }
 
     companion object {
-        const val UUID_STRING_LENGTH = 10
+        const val TOKEN_UUID_STRING_LENGTH = 10
+        const val VERIFICATION_CODE_UUID_STRING_LENGTH = 4
         val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     }
 }

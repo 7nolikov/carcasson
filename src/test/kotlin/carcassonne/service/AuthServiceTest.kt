@@ -4,7 +4,8 @@ import carcassonne.domain.meeple.Meeple
 import carcassonne.domain.meeple.MeepleType
 import carcassonne.domain.player.Player
 import carcassonne.repository.PlayerRepository
-import carcassonne.service.AuthServiceImpl.Companion.UUID_STRING_LENGTH
+import carcassonne.service.AuthServiceImpl.Companion.TOKEN_UUID_STRING_LENGTH
+import carcassonne.service.AuthServiceImpl.Companion.VERIFICATION_CODE_UUID_STRING_LENGTH
 import carcassonne.statemachine.auth.Event
 import carcassonne.statemachine.auth.SideEffect
 import carcassonne.statemachine.auth.State
@@ -40,15 +41,17 @@ class AuthServiceTest {
             TEST_PASSWORD
         )
         token `should not be` null
-        token.length `should equal` UUID_STRING_LENGTH
+        token.length `should equal` TOKEN_UUID_STRING_LENGTH
     }
 
     @Test
     fun `Test register in positive case`() {
-        val verificationCode = authService.register()
+        every {
+            playerRepository.save(player)
+        } returns player
+        val verificationCode = authService.register(TEST_USERNAME, TEST_PASSWORD, TEST_EMAIL)
         verificationCode `should not be` null
-        verificationCode `should equal` TEST_VERIFICATION_CODE
-        authStateMachine.state `should equal` State.PendingVerification
+        verificationCode.length `should equal` VERIFICATION_CODE_UUID_STRING_LENGTH
     }
 
     @Test
@@ -82,9 +85,6 @@ class AuthServiceTest {
         private const val TEST_VERIFICATION_CODE = "verificationcode"
         private const val TEST_EMAIL = "test@gmail.com"
         private val meeple = Meeple(id = 1, type = MeepleType.DEFAULT)
-        private val TEST_MEEPLES = listOf(meeple)
-        private const val TEST_SCORE = 1000
-        private val player =
-            Player(name = TEST_USERNAME, password = TEST_PASSWORD, email = TEST_EMAIL, meeples = TEST_MEEPLES, score = TEST_SCORE)
+        private val player = Player(name = TEST_USERNAME, password = TEST_PASSWORD, email = TEST_EMAIL)
     }
 }

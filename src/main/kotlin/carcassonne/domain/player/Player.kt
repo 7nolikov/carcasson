@@ -12,6 +12,6 @@ data class Player (
     val email: String,
     val password: String,
     @OneToMany
-    val meeples: List<Meeple>,
-    val score: Int
+    val meeples: List<Meeple> = emptyList(),
+    val score: Int = 0
 )
