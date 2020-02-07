@@ -1,5 +1,11 @@
 package carcassonne.service
 
+import carcassonne.domain.meeple.Meeple
+import carcassonne.domain.meeple.MeepleType
+import carcassonne.domain.player.Player
+import carcassonne.repository.PlayerRepository
+import carcassonne.service.AuthServiceImpl.Companion.TOKEN_UUID_STRING_LENGTH
+import carcassonne.service.AuthServiceImpl.Companion.VERIFICATION_CODE_UUID_STRING_LENGTH
 import carcassonne.statemachine.auth.Event
 import carcassonne.statemachine.auth.SideEffect
 import carcassonne.statemachine.auth.State
@@ -14,51 +20,47 @@ import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should not be`
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.util.*
 
 @ExtendWith(MockKExtension::class)
 class AuthServiceTest {
 
     @InjectMockKs
-    private lateinit var authService: AuthService
+    private lateinit var authService: AuthServiceImpl
 
     private val authStateMachine = mockk<StateMachine<State, Event, SideEffect>>()
+    private val playerRepository = mockk<PlayerRepository>()
 
     @Test
     fun `Test login in positive case`() {
         every {
-            authService.login(
-                TEST_USERNAME,
-                TEST_PASSWORD
-            )
-        } returns TEST_TOKEN
+            playerRepository.findById(TEST_USERNAME)
+        } returns Optional.of(player)
         val token = authService.login(
             TEST_USERNAME,
             TEST_PASSWORD
         )
-        verify {
-            authService.login(
-                TEST_USERNAME,
-                TEST_PASSWORD
-            )
-        }
         token `should not be` null
-        token `should equal` TEST_TOKEN
-        authStateMachine.state `should equal` State.Logged
+        token.length `should equal` TOKEN_UUID_STRING_LENGTH
     }
 
     @Test
     fun `Test register in positive case`() {
-        val verificationCode = authService.register()
+        every {
+            playerRepository.save(player)
+        } returns player
+        val verificationCode = authService.register(TEST_USERNAME, TEST_PASSWORD, TEST_EMAIL)
         verificationCode `should not be` null
-        verificationCode `should equal` TEST_VERIFICATION_CODE
-        authStateMachine.state `should equal` State.PendingVerification
+        verificationCode.length `should equal` VERIFICATION_CODE_UUID_STRING_LENGTH
     }
 
     @Test
     fun `Test checking of verification code in positive case`() {
-        val isVerificationCodeAccepted = authService.checkVerificationCode()
+        every {
+            playerRepository.findById(TEST_USERNAME)
+        } returns Optional.of(player)
+        val isVerificationCodeAccepted = authService.checkVerificationCode(TEST_USERNAME, TEST_VERIFICATION_CODE)
         isVerificationCodeAccepted `should be` true
-        authStateMachine.state `should equal` State.Logged
     }
 
     @Test
@@ -83,5 +85,8 @@ class AuthServiceTest {
         private const val TEST_PASSWORD = "secretpassword"
         private const val TEST_TOKEN = "secrettoken"
         private const val TEST_VERIFICATION_CODE = "verificationcode"
+        private const val TEST_EMAIL = "test@gmail.com"
+        private val meeple = Meeple(id = 1, type = MeepleType.DEFAULT)
+        private val player = Player(name = TEST_USERNAME, password = TEST_PASSWORD, email = TEST_EMAIL)
     }
 }
