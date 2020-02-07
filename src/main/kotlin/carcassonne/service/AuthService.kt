@@ -3,6 +3,7 @@ package carcassonne.service
 import carcassonne.domain.player.Player
 import carcassonne.exception.PasswordIncorrectException
 import carcassonne.exception.PlayerNotFoundException
+import carcassonne.exception.VerificationCodeIncorrectException
 import carcassonne.repository.PlayerRepository
 import org.springframework.stereotype.Service
 import kotlin.random.Random
@@ -10,7 +11,7 @@ import kotlin.random.Random
 interface AuthService {
     fun login(username: String, password: String): String
     fun register(username: String, password: String, email: String): String
-    fun checkVerificationCode(): Boolean
+    fun checkVerificationCode(username: String, verificationCode: String): Boolean
     fun resetPassword(): String
     fun logout()
 }
@@ -31,13 +32,15 @@ class AuthServiceImpl(
     }
 
     override fun register(username: String, password: String, email: String): String {
-        val player = Player(name = username, password = password, email = email)
+        val verificationCode = getRandomString(VERIFICATION_CODE_UUID_STRING_LENGTH)
+        val player = Player(name = username, password = password, email = email, verificationCode = verificationCode)
         playerRepository.save(player)
-        return getRandomString(VERIFICATION_CODE_UUID_STRING_LENGTH)
+        return verificationCode
     }
 
-    override fun checkVerificationCode(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun checkVerificationCode(username: String, verificationCode: String): Boolean {
+        val player: Player = playerRepository.findById(username).orElseThrow { throw PlayerNotFoundException(username) }
+        return if (player.verificationCode == verificationCode) true else throw VerificationCodeIncorrectException(username)
     }
 
     override fun resetPassword(): String {

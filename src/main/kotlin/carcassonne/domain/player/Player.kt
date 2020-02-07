@@ -13,5 +13,7 @@ data class Player (
     val password: String,
     @OneToMany
     val meeples: List<Meeple> = emptyList(),
-    val score: Int = 0
+    val score: Int = 0,
+    val isActive: Boolean = false,
+    val verificationCode: String = ""
 )

@@ -56,9 +56,11 @@ class AuthServiceTest {
 
     @Test
     fun `Test checking of verification code in positive case`() {
-        val isVerificationCodeAccepted = authService.checkVerificationCode()
+        every {
+            playerRepository.findById(TEST_USERNAME)
+        } returns Optional.of(player)
+        val isVerificationCodeAccepted = authService.checkVerificationCode(TEST_USERNAME, TEST_VERIFICATION_CODE)
         isVerificationCodeAccepted `should be` true
-        authStateMachine.state `should equal` State.Logged
     }
 
     @Test
