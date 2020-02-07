@@ -4,6 +4,7 @@ import carcassonne.domain.meeple.Meeple
 import carcassonne.domain.meeple.MeepleType
 import carcassonne.domain.player.Player
 import carcassonne.repository.PlayerRepository
+import carcassonne.service.AuthServiceImpl.Companion.UUID_STRING_LENGTH
 import carcassonne.statemachine.auth.Event
 import carcassonne.statemachine.auth.SideEffect
 import carcassonne.statemachine.auth.State
@@ -39,8 +40,7 @@ class AuthServiceTest {
             TEST_PASSWORD
         )
         token `should not be` null
-        token `should equal` TEST_TOKEN
-        authStateMachine.state `should equal` State.Logged
+        token.length `should equal` UUID_STRING_LENGTH
     }
 
     @Test
